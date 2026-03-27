@@ -41,7 +41,7 @@ bot.on('text', (ctx) => {
 
   if (!ignoreList.includes(text)) {
     bot.telegram.sendMessage(DAD_ID, `Yangi murojaat! ✅\nKimdan: @${ctx.from.username || 'Noma\'lum'}\nIsmi: ${ctx.from.first_name}\nXabar: ${text}`);
-    ctx.reply('Xabaringiz dadamga yuborildi. Tez orada javob beradilar! ✅');
+    ctx.reply('Xabaringiz Vet Vrach ga  yuborildi. Tez orada javob beradilar! ✅');
   }
 });
 
