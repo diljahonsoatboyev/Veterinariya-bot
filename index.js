@@ -1,9 +1,11 @@
 const http = require('http');
+
 http.createServer((req, res) => {
-  res.write('Bot is running!');
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('Bot is live!');
   res.end();
-}).listen(process.env.PORT || 3000);
-const { Telegraf, Markup } = require('telegraf');
+}).listen(process.env.PORT || 3000, "0.0.0.0");
+
 
 // Siz bergan ma'lumotlar
 const bot = new Telegraf('8796533734:AAED8DpMjAA3XN08ZwkpHblxkhUrUDCWxJI');
