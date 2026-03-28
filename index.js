@@ -1,3 +1,14 @@
+const { Telegraf, Markup } = require('telegraf'); // Mana shu qator bo'lishi shart!
+const http = require('http');
+
+http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('Bot is live!');
+  res.end();
+}).listen(process.env.PORT || 3000, "0.0.0.0");
+
+// Qolgan kodlaringiz shu yerdan davom etadi...
+
 const http = require('http');
 
 http.createServer((req, res) => {
@@ -27,7 +38,7 @@ bot.hears('🏥 Xizmatlar', (ctx) => {
 
 // Manzil bo'limi
 bot.hears('📍 Manzil', (ctx) => {
-  ctx.reply('Bizning klinika manzili: [Shu yerga aniq manzilni yozing]\nMo\'ljal: [Mo\'ljalni yozing]');
+  ctx.reply('Manzilimiz : Amudaryo tumani Mangit shahri');
 });
 
 // Aloqa bo'limi (Oddiy va xatosiz varianti)
