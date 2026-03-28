@@ -1,68 +1,43 @@
-const { Telegraf, Markup } = require('telegraf'); // Mana shu qator bo'lishi shart!
+const { Telegraf, Markup } = require('telegraf');
 const http = require('http');
 
+// 1. Render uchun uyg'otuvchi server (FAQAT BITTA BO'LSIN)
 http.createServer((req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write('Bot is live!');
   res.end();
 }).listen(process.env.PORT || 3000, "0.0.0.0");
 
-// Qolgan kodlaringiz shu yerdan davom etadi...
-
-const http = require('http');
-
-http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write('Bot is live!');
-  res.end();
-}).listen(process.env.PORT || 3000, "0.0.0.0");
-
-
-// Siz bergan ma'lumotlar
-const bot = new Telegraf('8796533734:AAED8DpMjAA3XN08ZwkpHblxkhUrUDCWxJI');
+// 2. Botni sozlash
+const bot = new Telegraf('8796533734:AAED8DpMjaA3XNO8ZvkpHblxhHUrUDCWxJI');
 const DAD_ID = '6711080505';
 
-// Bot ishga tushganda menyu chiqishi
+// 3. Bot buyruqlari
 bot.start((ctx) => {
-  ctx.reply(`Assalomu alaykum, ${ctx.from.first_name}! \nVeterinariya xizmati botiga xush kelibsiz.`, 
+  ctx.reply(`Assalomu alaykum, ${ctx.from.first_name}!`, 
     Markup.keyboard([
       ['🏥 Xizmatlar', '📅 Qabulga yozilish'],
       ['📍 Manzil', '📞 Aloqa']
-    ]).resize());
+    ]).resize()
+  );
 });
 
-// Xizmatlar bo'limi
 bot.hears('🏥 Xizmatlar', (ctx) => {
-  ctx.reply('Bizning xizmatlar:\n✅ Uy hayvonlarini emlash\n✅ Kasalliklarni aniqlash va davolash\n✅ Konsultatsiya va jarrohlik');
+  ctx.reply('Bizning xizmatlar:\n✅ Uy hayvonlarini davolash\n✅ Vaksina emlash\n✅ Konsultatsiya');
 });
 
-// Manzil bo'limi
 bot.hears('📍 Manzil', (ctx) => {
-  ctx.reply('Manzilimiz : Amudaryo tumani Mangit shahri');
+  ctx.reply('Manzilimiz: Amudaryo tumani, Mang‘it shahri.');
 });
 
-// Aloqa bo'limi (Oddiy va xatosiz varianti)
 bot.hears('📞 Aloqa', (ctx) => {
-  ctx.reply('Doktor bilan bog\'lanish uchun raqam:\n\n📞 +998932068122\n\nUstiga bossangiz, qo\'ng\'iroq qilish imkoni chiqadi.');
+  ctx.reply('Doktor bilan bog‘lanish uchun raqam: +998932068122');
 });
 
-
-// Qabulga yozilish bo'limi
 bot.hears('📅 Qabulga yozilish', (ctx) => {
-  ctx.reply('Iltimos, ismingiz va hayvoningiz haqida qisqacha yozing.  Vet Vrach  siz bilan bog\'lanadi.');
+  ctx.reply('Iltimos, ismingiz va hayvoningiz haqida ma’lumot qoldiring, doktor siz bilan bog‘lanadi.');
 });
 
-// Mijoz yozgan xabarni dadangizga yuborish
-bot.on('text', (ctx) => {
-  const text = ctx.message.text;
-  const ignoreList = ['🏥 Xizmatlar', '📍 Manzil', '📅 Qabulga yozilish', '📞 Aloqa'];
-
-  if (!ignoreList.includes(text)) {
-    bot.telegram.sendMessage(DAD_ID, `Yangi murojaat! ✅\nKimdan: @${ctx.from.username || 'Noma\'lum'}\nIsmi: ${ctx.from.first_name}\nXabar: ${text}`);
-    ctx.reply('Xabaringiz Vet Vrach ga  yuborildi. Tez orada javob beradilar! ✅');
-  }
-});
-
+// 4. Botni ishga tushirish
 bot.launch();
 console.log('Veterinar bot ishga tushdi! ✅');
-
