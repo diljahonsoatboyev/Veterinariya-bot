@@ -9,7 +9,7 @@ http.createServer((req, res) => {
 }).listen(process.env.PORT || 3000, "0.0.0.0");
 
 // 2. Botni sozlash
-const bot = new Telegraf('8796533734:AAED8DpMjaA3XNO8ZvkpHblxhHUrUDCWxJI');
+const bot = new Telegraf('8796533734:AAGGZRJFAlK0GF76OE2JD1XmvDZBbZO4wKo');
 const DAD_ID = '6711080505';
 
 // 3. Bot buyruqlari
