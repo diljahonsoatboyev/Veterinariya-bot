@@ -25,11 +25,17 @@ bot.hears('📍 Manzil', (ctx) => {
 });
 
 // Botni ishga tushirish
-bot.launch().then(() => {
-    console.log('Bot muvaffaqiyatli ishga tushdi! ✅');
-}).catch((err) => {
-    console.error('XATO: Token noto‘g‘ri yoki boshqa muammo:', err.message);
+// Eski bot.launch() ni o'chirib, o'rniga buni qo'ying:
+bot.launch({
+  webhook: {
+    domain: 'https://veterinariya-bot.onrender.com', // O'zingizni URL manzilingiz
+    port: process.env.PORT || 3000
+  }
+}).then(() => {
+  console.log('Bot Webhook orqali ishga tushdi! ✅');
 });
 
-console.log('Server va Bot yuklanmoqda...');
+// Xatolikni ushlash uchun
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
