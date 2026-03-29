@@ -1,18 +1,19 @@
 const { Telegraf, Markup } = require('telegraf');
 const http = require('http');
 
-// Render uchun server
-http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write('Bot is live!');
-  res.end();
-}).listen(process.env.PORT || 3000, "0.0.0.0");
+// 1. ASOSIY SOZLAMALAR
+const TOKEN = '8796533734:AAGNrtzWX_UiNDV0JvrMjh_WST-bHNqv_Uc';
+const URL = 'https://veterinariya-bot.onrender.com';
+const PORT = process.env.PORT || 3000;
 
-// BOT TOKENINI SHU YERGA QO'YING (BotFather'dan olingan)
-const bot = new Telegraf('8796533734:AAGNrtzWX_UiNDV0JvrMjh_WST-bHNqv_Uc');
+const bot = new Telegraf(TOKEN);
 
+// 2. WEBHOOKNI SOZLASH (Render uchun eng barqaror usul)
+bot.telegram.setWebhook(`${URL}/bot${TOKEN}`);
+
+// 3. BOT BUYRUQLARI
 bot.start((ctx) => {
-  ctx.reply(`Assalomu alaykum, ${ctx.from.first_name}!`, 
+  ctx.reply(`Assalomu alaykum, ${ctx.from.first_name}! 🐾\nVeterinariya xizmati botiga xush kelibsiz!`, 
     Markup.keyboard([
       ['🏥 Xizmatlar', '📅 Qabulga yozilish'],
       ['📍 Manzil', '📞 Aloqa']
@@ -20,22 +21,44 @@ bot.start((ctx) => {
   );
 });
 
+bot.hears('🏥 Xizmatlar', (ctx) => {
+  ctx.reply('Bizning xizmatlar:\n✅ Uy hayvonlarini davolash\n✅ Vaksina emlash\n✅ Konsultatsiya');
+});
+
 bot.hears('📍 Manzil', (ctx) => {
-  ctx.reply('Manzilimiz: Amudaryo tumani, Mang‘it shahri.');
+  ctx.reply('📍 Manzilimiz: Amudaryo tumani, Mang‘it shahri.\nMo‘ljal: Markaziy shifoxona yaqinida.');
 });
 
-// Botni ishga tushirish
-// Eski bot.launch() ni o'chirib, o'rniga buni qo'ying:
-bot.launch({
-  webhook: {
-    domain: 'https://veterinariya-bot.onrender.com', // O'zingizni URL manzilingiz
-    port: process.env.PORT || 3000
+bot.hears('📞 Aloqa', (ctx) => {
+  ctx.reply('📞 Doktor bilan bog‘lanish: +998932068122\nSavollaringiz bo‘lsa, bemalol murojaat qiling!');
+});
+
+bot.hears('📅 Qabulga yozilish', (ctx) => {
+  ctx.reply('📅 Qabulga yozilish uchun ismingiz va hayvoningiz turini yozib qoldiring. Tez orada siz bilan bog‘lanamiz.');
+});
+
+// 4. YAGONA SERVER (Port to‘qnashuvini oldini oladi)
+const server = http.createServer((req, res) => {
+  if (req.url === `/bot${TOKEN}`) {
+    // Telegramdan kelgan xabarlarni qayta ishlash
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        bot.handleUpdate(JSON.parse(body), res);
+      } catch (e) {
+        console.error("Xato:", e);
+        res.end();
+      }
+    });
+  } else {
+    // Cron-job yoki brauzer uchun "uyg'otuvchi" javob
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot is live and running! ✅');
   }
-}).then(() => {
-  console.log('Bot Webhook orqali ishga tushdi! ✅');
 });
 
-// Xatolikni ushlash uchun
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
+// 5. ISHGA TUSHIRISH
+server.listen(PORT, () => {
+  console.log(`Server ${PORT}-portda muvaffaqiyatli ishga tushdi! ✅`);
+});
