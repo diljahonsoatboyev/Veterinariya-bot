@@ -9,7 +9,7 @@ http.createServer((req, res) => {
 }).listen(process.env.PORT || 3000, "0.0.0.0");
 
 // BOT TOKENINI SHU YERGA QO'YING (BotFather'dan olingan)
-const bot = new Telegraf('BU_YERGA_YANGI_TOKENNI_QOYING');
+const bot = new Telegraf('8796533734:AAGNrtzWX_UiNDV0JvrMjh_WST-bHNqv_Uc');
 
 bot.start((ctx) => {
   ctx.reply(`Assalomu alaykum, ${ctx.from.first_name}!`, 
