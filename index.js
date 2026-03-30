@@ -26,7 +26,7 @@ bot.hears('🏥 Xizmatlar', (ctx) => {
 });
 
 bot.hears('📍 Manzil', (ctx) => {
-  ctx.reply('📍 Manzilimiz: Amudaryo tumani, Mang‘it shahri.\nMo‘ljal: Markaziy shifoxona yaqinida.');
+  ctx.reply('📍 Manzilimiz: Amudaryo tumani, Mang‘it shahri.');
 });
 
 bot.hears('📞 Aloqa', (ctx) => {
